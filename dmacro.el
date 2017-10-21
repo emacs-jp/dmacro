@@ -193,11 +193,6 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defconst dmacro-array-type 'vector)
-
-(defalias 'dmacro-concat #'vconcat)
-(defalias 'dmacro-subseq #'cl-subseq)
-
 (defvar *dmacro-arry* nil "繰返しキー配列")
 (defvar *dmacro-arry-1* nil "繰返しキーの部分配列")
 
@@ -207,7 +202,7 @@
 
 (defvar dmacro-keys)
 
-(setq dmacro-keys (dmacro-concat dmacro-key dmacro-key))
+(setq dmacro-keys (vconcat dmacro-key dmacro-key))
 
 (defun dmacro-exec ()
   "キー操作の繰返しを検出し実行する"
@@ -231,25 +226,17 @@
    (t 0)
    ))
 
-(defun dmacro-recent-keys ()
-  (cond ((eq dmacro-array-type 'vector) (recent-keys))
-	((eq dmacro-array-type 'string)
-	 (let ((s (recent-keys)) )
-	   (if (stringp s) s
-	     (concat (mapcar 'dmacro-event s))
-	     )))))
-
 (defun dmacro-get ()
-  (let ((rkeys (dmacro-recent-keys)) arry)
-    (if (equal dmacro-keys (dmacro-subseq rkeys (- (length dmacro-keys))))
+  (let ((rkeys (recent-keys)) arry)
+    (if (equal dmacro-keys (cl-subseq rkeys (- (length dmacro-keys))))
         (progn
           (setq *dmacro-arry-1* nil)
           *dmacro-arry*)
-      (setq arry (dmacro-search (dmacro-subseq rkeys 0 (- (length dmacro-key)))))
+      (setq arry (dmacro-search (cl-subseq rkeys 0 (- (length dmacro-key)))))
       (if (null arry)
           (setq *dmacro-arry* nil)
         (let ((s1 (car arry)) (s2 (cdr arry)))
-          (setq *dmacro-arry* (dmacro-concat s2 s1)
+          (setq *dmacro-arry* (vconcat s2 s1)
                 *dmacro-arry-1* (if (equal s1 "") nil s1))
           (setq last-kbd-macro *dmacro-arry*)
           (if (equal s1 "") *dmacro-arry* s1))
@@ -258,29 +245,29 @@
 (defun dmacro-search (array)
   (let* ((arry (dmacro-array-reverse array))
          (sptr  1)
-         (dptr0 (dmacro-array-search (dmacro-subseq arry 0 sptr) arry sptr))
+         (dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
          (dptr dptr0)
          maxptr)
     (while (and dptr0
-                (not (dmacro-array-search dmacro-key (dmacro-subseq arry sptr dptr0))))
+                (not (dmacro-array-search dmacro-key (cl-subseq arry sptr dptr0))))
       (if (= dptr0 sptr)
           (setq maxptr sptr))
       (setq sptr (1+ sptr))
       (setq dptr dptr0)
-      (setq dptr0 (dmacro-array-search (dmacro-subseq arry 0 sptr) arry sptr))
+      (setq dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
       )
     (if (null maxptr)
-        (let ((predict-arry (dmacro-array-reverse (dmacro-subseq arry (1- sptr) dptr))))
+        (let ((predict-arry (dmacro-array-reverse (cl-subseq arry (1- sptr) dptr))))
           (if (dmacro-array-search dmacro-key predict-arry)
               nil
-            (cons predict-arry (dmacro-array-reverse (dmacro-subseq arry 0 (1- sptr)))))
+            (cons predict-arry (dmacro-array-reverse (cl-subseq arry 0 (1- sptr)))))
           )
-      (cons "" (dmacro-array-reverse (dmacro-subseq arry 0 maxptr)))
+      (cons "" (dmacro-array-reverse (cl-subseq arry 0 maxptr)))
       )
     ))
 
 (defun dmacro-array-reverse (arry)
-  (dmacro-concat (reverse (mapcar 'identity arry))))
+  (vconcat (reverse (mapcar 'identity arry))))
 
 (defun dmacro-array-search (pat arry &optional start)
   (let* ((len (length pat))
@@ -289,7 +276,7 @@
 	 )
     (setq p (if start start 0))
     (while (and (not found) (<= p max))
-      (setq found (equal pat (dmacro-subseq arry p (+ p len))))
+      (setq found (equal pat (cl-subseq arry p (+ p len))))
       (if (not found) (setq p (1+ p)))
       )
     (if found p nil)
