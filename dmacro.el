@@ -210,17 +210,18 @@
 (defalias 'dmacro--user-error
   (eval-when-compile (if (fboundp 'user-error) #'user-error #'message)))
 
-(defun dmacro-event (e)
-  (cond
-   ((integerp e) e)
-   ((eq e 'backspace) 8)
-   ((eq e 'tab) 9)
-   ((eq e 'enter) 13)
-   ((eq e 'return) 13)
-   ((eq e 'escape) 27)
-   ((eq e 'delete) 127)
-   (t 0)
-   ))
+(defun dmacro--ensure-keycode (key)
+  "Return key code or symbol `KEY' by `recent-keys'."
+  (if (integerp key)
+      key
+    (cl-case key
+      ('backspace ?\C-h)
+      ('tab       ?\C-i)
+      ('enter     ?\C-m)
+      ('return    ?\C-m)
+      ('escape    ?\C-\[)
+      ('delete    ?\C-?)
+      (t          key))))
 
 (defun dmacro-get ()
   (let ((rkeys (recent-keys)) arry)
