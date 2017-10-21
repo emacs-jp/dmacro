@@ -1,3 +1,25 @@
+;;; dmacro.el --- Repeated detection and execution of key operation
+
+;; Copyright (C) 1993 Toshiyuki Masui
+
+;; Author: Toshiyuki Masui <masui@ptiecan.com>
+;;         Makoto Owada
+;;         Eiji Obata
+;;         Nobuyuki Mine
+;; Created: 14 Apr 1993
+;; Version: 2.0
+;; Keywords: convenience
+;; URL: https://github.com/emacs-jp/dmacro
+
+;;; Commentary:
+
+;; Tired of performing the same editing operations again and again?
+;; Using the Dynamic Macro system on GNU Emacs, you can make the system
+;; perform repetitive operations automatically, only by typing the special
+;; key after doing the same operations twice.
+
+;; Original comments:
+
 ;;
 ;;      dmacro.el - キー操作の繰返し検出 & 実行
 ;;
@@ -17,7 +39,7 @@
 ;; dmacro.el は、繰り返されるキー操作列から次の操作を予測し実行させる
 ;; ためのプログラムです。操作の繰返しの検出とその実行を指令するために
 ;; *dmacro-key* で指定する特別の「繰返しキー」を使用します。
-;; 
+;;
 ;; 例えばユーザが
 ;;     abcabc
 ;; と入力した後「繰返しキー」を押すと、dmacro.el は "abc" の入力操作の
@@ -33,7 +55,7 @@
 ;; が繰り返されて、テキストは
 ;;     abcdefabcdefabcdef
 ;; となります。
-;; 
+;;
 ;; あらゆるキー操作の繰返しが認識、実行されるため、例えば
 ;;     line1
 ;;     line2
@@ -50,7 +72,7 @@
 ;;     % line3
 ;;     line4
 ;; のようになり、その後押すたびに次の行頭に "% "が追加されていきます。
-;; 
+;;
 ;; このような機能は、繰返しパタンの認識によりキーボードマクロを自動的に
 ;; 定義していると考えることもできます。キーボードマクロの場合は操作を
 ;; 開始する以前にそのことをユーザが認識してマクロを登録する必要があり
@@ -59,11 +81,11 @@
 ;; ことができます。またマクロの定義方法(操作の後で「繰返しキー」を押す
 ;; だけ)もキーボードマクロの場合(マクロの開始と終了を指定する)に比べて
 ;; 単純になっています。
-;;  
+;;
 ;; ● 使用例
-;;  
+;;
 ;; ・文字列置換
-;; 
+;;
 ;; テキスト中の全ての「abc」を「def]に修正する場合を考えてみます。
 ;; 「abc」を検索するキー操作は "Ctrl-S a b c ESC" で、これは
 ;; "DEL DEL DEL d e f" で「def」に修正することができます。
@@ -73,9 +95,9 @@
 ;; を押すと次の「abc」が「def」に修正されます。
 ;; このように「繰返しキー」を押していくことにより順々に文字列を
 ;; 置換していくことができます。
-;; 
+;;
 ;; ・罫線によるお絵書き
-;; 
+;;
 ;; 繰返しを含む絵を簡単に書くことができます。例えば、
 ;;   ─┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐
 ;;     └┘└┘└┘└┘└┘└┘└┘└┘└┘└┘└┘└┘└┘
@@ -95,26 +117,26 @@
 ;;  ┌─┐  ─
 ;;  └─┘
 ;; だけ入力した後「繰返しキー」を連続して押すだけで描くことができます。
-;;  
+;;
 ;; ● 繰返し予測の方法
-;;  
+;;
 ;; 入力の繰返しの予測手法はいろいろ考えられますが、dmacro.elでは
 ;; 以下のような優先度をもたせています。
-;; 
+;;
 ;;  (1) 同じ入力パタンが予測の直前に2度繰返されている場合はそれを
 ;;      優先する。繰返しパタンが複数ある場合は長いものを優先する。
-;; 
+;;
 ;;      例えば、「かわいいかわいい」という入力では「かわいい」と
 ;;      いうパタンが繰り返されたという解釈と、「い」というパタンが
 ;;      繰り返されたという解釈の両方が可能ですが、この場合
 ;;      「かわいい」を優先します。
-;; 
+;;
 ;;  (2) (1)の場合にあてはまらず、直前の入力列<s>がそれ以前の入力列の
 ;;      一部になっている場合(直前の入力が<s> <t> <s>のような形に
 ;;      なっている場合)は、まず<t>を予測し、その次から<s> <t>を予測
 ;;      する。このとき<s>の長いものを優先し、その中では<t>が短いもの
 ;;      を優先する。
-;; 
+;;
 ;;      例えば「abracadabra」という入力では、<s>=「abra」が最長なので
 ;;      <s> <t>=「cadabra」の予測が優先されます。
 ;;
@@ -159,6 +181,8 @@
 ;; (株)ソニーコンピュータサイエンス研究所
 ;; masui@acm.org
 ;;
+
+;;; Code:
 
 (defvar dmacro-array-type
   (if (and (boundp 'emacs-major-version)
@@ -292,4 +316,5 @@ GNU Emacs 18 (Nemacs) を使っている方以外は vector で問題ありま�
     (if found p nil)
     ))
 
-
+(provide 'dmacro)
+;;; dmacro.el ends here
