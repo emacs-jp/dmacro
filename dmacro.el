@@ -284,8 +284,8 @@
   (interactive)
   (let ((s (dmacro-get)))
     (if (null s)
-	(message "操作の繰返しが見つかりません")
-      (execute-kbd-macro s))
+	(dmacro--user-error "There is no repetitive operation")
+      (execute-kbd-macro s))))
 
 (provide 'dmacro)
 ;;; dmacro.el ends here
