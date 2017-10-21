@@ -193,8 +193,10 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *dmacro-arry* nil "繰返しキー配列")
-(defvar *dmacro-arry-1* nil "繰返しキーの部分配列")
+
+;; Special variables *var*
+(defvar dmacro--input-keys)
+(defvar dmacro--input-subkeys)
 
 (defvar dmacro-key)
 
@@ -230,16 +232,16 @@
   (let ((rkeys (recent-keys)) arry)
     (if (equal dmacro-keys (cl-subseq rkeys (- (length dmacro-keys))))
         (progn
-          (setq *dmacro-arry-1* nil)
-          *dmacro-arry*)
+          (setq dmacro--input-subkeys nil)
+          dmacro--input-keys)
       (setq arry (dmacro-search (cl-subseq rkeys 0 (- (length dmacro-key)))))
       (if (null arry)
-          (setq *dmacro-arry* nil)
+          (setq dmacro--input-keys nil)
         (let ((s1 (car arry)) (s2 (cdr arry)))
-          (setq *dmacro-arry* (vconcat s2 s1)
-                *dmacro-arry-1* (if (equal s1 "") nil s1))
-          (setq last-kbd-macro *dmacro-arry*)
-          (if (equal s1 "") *dmacro-arry* s1))
+          (setq dmacro--input-keys (vconcat s2 s1)
+                dmacro--input-subkeys (if (equal s1 "") nil s1))
+          (setq last-kbd-macro dmacro--input-keys)
+          (if (equal s1 "") dmacro--input-keys s1))
         ))))
 
 (defun dmacro-search (array)
