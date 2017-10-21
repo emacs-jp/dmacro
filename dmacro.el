@@ -205,16 +205,6 @@
 (defvar dmacro-keys)
 
 (setq dmacro-keys (vconcat dmacro-key dmacro-key))
-
-(defun dmacro-exec ()
-  "キー操作の繰返しを検出し実行する"
-  (interactive)
-  (let ((s (dmacro-get)))
-    (if (null s)
-	(message "操作の繰返しが見つかりません")
-      (execute-kbd-macro s)
-      )
-    ))
 
 ;; Utility functions
 (defalias 'dmacro--user-error
@@ -287,6 +277,15 @@
       )
     (if found p nil)
     ))
+
+;;;###autoload
+(defun dmacro-exec ()
+  "Repeated detection and execution of key operation."
+  (interactive)
+  (let ((s (dmacro-get)))
+    (if (null s)
+	(message "操作の繰返しが見つかりません")
+      (execute-kbd-macro s))
 
 (provide 'dmacro)
 ;;; dmacro.el ends here
