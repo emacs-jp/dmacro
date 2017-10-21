@@ -239,7 +239,7 @@
         ))))
 
 (defun dmacro-search (array)
-  (let* ((arry (dmacro-array-reverse array))
+  (let* ((arry (reverse array))
          (sptr  1)
          (dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
          (dptr dptr0)
@@ -253,14 +253,11 @@
       (setq dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
       )
     (if (null maxptr)
-        (let ((predict-arry (dmacro-array-reverse (cl-subseq arry (1- sptr) dptr))))
+        (let ((predict-arry (reverse (cl-subseq arry (1- sptr) dptr))))
           (if (dmacro-array-search dmacro-key predict-arry)
               nil
-            (cons predict-arry (dmacro-array-reverse (cl-subseq arry 0 (1- sptr)))))
-          )
-      (cons "" (dmacro-array-reverse (cl-subseq arry 0 maxptr)))
-      )
-    ))
+            (cons predict-arry (reverse (cl-subseq arry 0 (1- sptr))))))
+      (cons "" (reverse (cl-subseq arry 0 maxptr))))))
 
 (defun dmacro-array-reverse (arry)
   (vconcat (reverse (mapcar 'identity arry))))
