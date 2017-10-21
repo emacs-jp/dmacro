@@ -15,6 +15,7 @@
 ;; Created: 14 Apr 1993
 ;; Version: 2.0
 ;; Keywords: convenience
+;; Package-Requires: ((cl-lib "0.5"))
 ;; URL: https://github.com/emacs-jp/dmacro
 ;; License: FSFAP
 
@@ -190,44 +191,21 @@
 ;;
 
 ;;; Code:
+(require 'cl-lib)
 
-(defvar dmacro-array-type
-  (if (and (boundp 'emacs-major-version)
-	   (>= emacs-major-version 19))
-      'vector 'string)
-  "dmacro の内部で処理する配列の種類。
-emacs 19 以上ならデフォルトで vector にする。
-string では hyper, super, alt を含んだ入力の繰り返しが
-正しく処理できないので注意。
-GNU Emacs 18 (Nemacs) を使っている方以外は vector で問題ありません。")
+(defconst dmacro-array-type 'vector)
 
-(fset 'dmacro-concat
-      (cond ((eq dmacro-array-type 'string) 'concat)
-	    ((eq dmacro-array-type 'vector) 'vconcat)))
-	    
-(fset 'dmacro-subseq
-      (cond ((featurep 'xemacs) 'subseq)
-            ((and (eq dmacro-array-type 'vector)
-                  (boundp 'emacs-major-version)
-                  (eq emacs-major-version 19))
-             (require 'cl)
-             'subseq)
-            (t 'substring)))
- 
+(defalias 'dmacro-concat #'vconcat)
+(defalias 'dmacro-subseq #'cl-subseq)
+
 (defvar *dmacro-arry* nil "繰返しキー配列")
 (defvar *dmacro-arry-1* nil "繰返しキーの部分配列")
 
-(setq dmacro-key
-      (cond ((eq dmacro-array-type 'string)
-             *dmacro-key*)
-            (t
-             (let ((key *dmacro-key*))
-               (cond ((featurep 'xemacs)
-                      (if (arrayp key)
-                          (mapvector 'character-to-event key)
-                        (vector (character-to-event key))))
-                     (t
-                      (vconcat key)))))))
+(defvar dmacro-key)
+
+(setq dmacro-key (vconcat *dmacro-key*))
+
+(defvar dmacro-keys)
 
 (setq dmacro-keys (dmacro-concat dmacro-key dmacro-key))
 
@@ -263,13 +241,7 @@ GNU Emacs 18 (Nemacs) を使っている方以外は vector で問題ありま�
 
 (defun dmacro-get ()
   (let ((rkeys (dmacro-recent-keys)) arry)
-    (if (if (featurep 'xemacs)
-            (let ((keys (vconcat dmacro-key
-                                 (or *dmacro-arry-1* *dmacro-arry*)
-                                 dmacro-key)))
-              (equal keys
-                     (subseq rkeys (- (length keys)))))
-          (equal dmacro-keys (dmacro-subseq rkeys (- (length dmacro-keys)))))
+    (if (equal dmacro-keys (dmacro-subseq rkeys (- (length dmacro-keys))))
         (progn
           (setq *dmacro-arry-1* nil)
           *dmacro-arry*)
