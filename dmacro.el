@@ -259,9 +259,6 @@
             (cons predict-arry (reverse (cl-subseq arry 0 (1- sptr))))))
       (cons "" (reverse (cl-subseq arry 0 maxptr))))))
 
-(defun dmacro-array-reverse (arry)
-  (vconcat (reverse (mapcar 'identity arry))))
-
 (defun dmacro-array-search (pat arry &optional start)
   (let* ((len (length pat))
 	 (max (- (length arry) len))
