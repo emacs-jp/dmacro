@@ -215,6 +215,10 @@
       (execute-kbd-macro s)
       )
     ))
+
+;; Utility functions
+(defalias 'dmacro--user-error
+  (eval-when-compile (if (fboundp 'user-error) #'user-error #'message)))
 
 (defun dmacro-event (e)
   (cond
