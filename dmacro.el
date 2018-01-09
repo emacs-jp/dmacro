@@ -192,19 +192,20 @@
 
 ;;; Code:
 (require 'cl-lib)
+
+;; Variables
+
+;;;###autoload
+(progn
+  (defvar dmacro-key nil)
+  (make-variable-buffer-local 'dmacro-key)
+  (defvar dmacro-keys nil)
+  (make-variable-buffer-local 'dmacro-keys))
 
 
 ;; Special variables *var*
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
-
-(defvar dmacro-key)
-
-(setq dmacro-key (vconcat *dmacro-key*))
-
-(defvar dmacro-keys)
-
-(setq dmacro-keys (vconcat dmacro-key dmacro-key))
 
 ;; Utility functions
 (defalias 'dmacro--user-error
