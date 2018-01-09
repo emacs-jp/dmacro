@@ -292,14 +292,20 @@
   "Turn on `dmacro-mode'."
   (dmacro-mode 1))
 
-;;;###autoload
-(defun dmacro-exec ()
-  "Repeated detection and execution of key operation."
-  (interactive)
-  (let ((s (dmacro-get)))
-    (if (null s)
-	(dmacro--user-error "There is no repetitive operation")
-      (execute-kbd-macro s))))
+;; Compatibility for old setup description
+(when (boundp '*dmacro-key*)
+  (defun dmacro-exec ()
+    "Repeated detection and execution of key operation."
+    (interactive)
+    (setq dmacro-key *dmacro-key*)
+    (unless dmacro-mode
+      (dmacro-mode 1))
+
+    (let ((s (dmacro-get)))
+      (if (null s)
+          (dmacro--user-error "There is no repetitive operation")
+        (execute-kbd-macro s))))
+  (make-obsolete 'dmacro-exec 'dmacro-mode "2.0"))
 
 ;;;###autoload
 (define-minor-mode dmacro-mode
@@ -312,7 +318,13 @@
     (unless dmacro-key
       (error "Not set `dmacro-key' or `dmacro-default-key'"))
     (setq dmacro-keys (vconcat dmacro-key dmacro-key))
-    (local-set-key dmacro-key #'dmacro-exec)))
+    (local-set-key
+     dmacro-key
+     (lambda ()
+       (let ((s (dmacro-get)))
+         (if (null s)
+             (dmacro--user-error "There is no repetitive operation")
+           (execute-kbd-macro s)))))))
 
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
