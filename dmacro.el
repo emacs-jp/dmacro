@@ -202,6 +202,8 @@
   (defvar dmacro-keys nil)
   (make-variable-buffer-local 'dmacro-keys))
 
+(defvar dmacro-lighter "dmac")
+
 ;; Customize
 
 ;;;###autoload
@@ -286,6 +288,10 @@
     (if found p nil)
     ))
 
+(defun turn-on-dmacro ()
+  "Turn on `dmacro-mode'."
+  (dmacro-mode 1))
+
 ;;;###autoload
 (defun dmacro-exec ()
   "Repeated detection and execution of key operation."
@@ -294,6 +300,25 @@
     (if (null s)
 	(dmacro--user-error "There is no repetitive operation")
       (execute-kbd-macro s))))
+
+;;;###autoload
+(define-minor-mode dmacro-mode
+  "Dynamic Macro"
+  :group 'dmacro
+  :lighter dmacro-lighter
+  (setq dmacro-key (or dmacro-key dmacro-default-key))
+  (if (not dmacro-mode)
+      (local-set-key dmacro-key nil)
+    (unless dmacro-key
+      (error "Not set `dmacro-key' or `dmacro-default-key'"))
+    (setq dmacro-keys (vconcat dmacro-key dmacro-key))
+    (local-set-key dmacro-key #'dmacro-exec)))
+
+;;;###autoload
+(define-globalized-minor-mode global-dmacro-mode dmacro-mode
+  turn-on-dmacro
+  :group 'dmacro
+  :require 'dmacro)
 
 (provide 'dmacro)
 ;;; dmacro.el ends here
