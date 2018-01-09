@@ -202,7 +202,7 @@
   (defvar dmacro-keys nil)
   (make-variable-buffer-local 'dmacro-keys))
 
-(defvar dmacro-lighter "dmac")
+(defvar dmacro-lighter " dmac")
 
 ;; Customize
 
