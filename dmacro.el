@@ -321,6 +321,7 @@
     (local-set-key
      dmacro-key
      (lambda ()
+       (interactive)
        (let ((s (dmacro-get)))
          (if (null s)
              (dmacro--user-error "There is no repetitive operation")
