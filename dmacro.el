@@ -202,6 +202,18 @@
   (defvar dmacro-keys nil)
   (make-variable-buffer-local 'dmacro-keys))
 
+;; Customize
+
+;;;###autoload
+(progn
+  (defgroup dmacro nil "Dynamic Macro"
+    :group 'convenient
+    :prefix "dmacro-")
+
+  (defcustom dmacro-default-key nil
+    "Default key sequences for dmacro."
+    :type 'key-sequence
+    :group 'dmacro))
 
 ;; Special variables *var*
 (defvar dmacro--input-keys)
