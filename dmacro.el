@@ -237,8 +237,11 @@
       ('escape    ?\C-\[)
       ('delete    ?\C-?)
       (t          key))))
+
+;;; Functions
 
 (defun dmacro-get ()
+  "Get repeated sequence."
   (let ((rkeys (recent-keys)) arry)
     (if (equal dmacro-keys (cl-subseq rkeys (- (length dmacro-keys))))
         (progn
@@ -251,10 +254,10 @@
           (setq dmacro--input-keys (vconcat s2 s1)
                 dmacro--input-subkeys (if (equal s1 "") nil s1))
           (setq last-kbd-macro dmacro--input-keys)
-          (if (equal s1 "") dmacro--input-keys s1))
-        ))))
+          (if (equal s1 "") dmacro--input-keys s1))))))
 
 (defun dmacro-search (array)
+  "Search `ARRAY'."
   (let* ((arry (reverse array))
          (sptr  1)
          (dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
@@ -266,8 +269,7 @@
           (setq maxptr sptr))
       (setq sptr (1+ sptr))
       (setq dptr dptr0)
-      (setq dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
-      )
+      (setq dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr)))
     (if (null maxptr)
         (let ((predict-arry (reverse (cl-subseq arry (1- sptr) dptr))))
           (if (dmacro-array-search dmacro-key predict-arry)
@@ -276,17 +278,15 @@
       (cons "" (reverse (cl-subseq arry 0 maxptr))))))
 
 (defun dmacro-array-search (pat arry &optional start)
+  "Search pattern `PAT' by `ARRY'.  `START'."
   (let* ((len (length pat))
 	 (max (- (length arry) len))
-	 p found
-	 )
-    (setq p (if start start 0))
+	 (p (or start 0))
+         found)
     (while (and (not found) (<= p max))
       (setq found (equal pat (cl-subseq arry p (+ p len))))
-      (if (not found) (setq p (1+ p)))
-      )
-    (if found p nil)
-    ))
+      (if (not found) (setq p (1+ p))))
+    (if found p nil)))
 
 (defun turn-on-dmacro ()
   "Turn on `dmacro-mode'."
