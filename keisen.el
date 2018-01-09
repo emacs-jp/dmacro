@@ -1,26 +1,28 @@
-;; keisen.el -- provide facility for drawing ruled-line
-;;
-;; Copyright (C) 1990-2004 $BA}0f=SG7(B  masui@pitecan.com
-;;
+;;; keisen.el -- provide facility for drawing ruled-line
+
+;; Copyright (C) 1990-2004 増井俊之  masui@pitecan.com
+
 ;; This is a Public Domain Software.
 ;; Everyone is granted permission to copy, modify and redistribute
 ;; this program freely.
- 
-;; .emacs$B$K0J2<$N$h$&$J5-=R$rF~$l$k$HLp0u%-!<$G7S@~$,0z$1$k(B
+
+;;; Commentary:
+
+;; .emacsに以下のような記述を入れると矢印キーで罫線が引ける
 ;;
-;; $BJ8;zC<Kv$NLp0u%-!<$G7S@~$r0z$/>l9g(B
+;; 文字端末の矢印キーで罫線を引く場合
 ;; (global-set-key "\eOA" 'keisen-up-move)
 ;; (global-set-key "\eOB" 'keisen-down-move)
 ;; (global-set-key "\eOD" 'keisen-left-move)
 ;; (global-set-key "\eOC" 'keisen-right-move)
 ;;
-;; $BJ8;zC<Kv$N(BMeta-P$B$J$I$G7S@~$r0z$/>l9g(B
+;; 文字端末のMeta-Pなどで罫線を引く場合
 ;; (global-set-key "\M-p" 'keisen-up-move)
 ;; (global-set-key "\M-n" 'keisen-down-move)
 ;; (global-set-key "\M-b" 'keisen-left-move)
 ;; (global-set-key "\M-f" 'keisen-right-move)
 ;;
-;; Control+$BLp0u%-!<$G7S@~$r0z$/>l9g(B
+;; Control+矢印キーで罫線を引く場合
 ;; (global-set-key [C-right] 'keisen-right-move)
 ;; (global-set-key [C-left]  'keisen-left-move)
 ;; (global-set-key [C-up]    'keisen-up-move)
@@ -30,7 +32,7 @@
 ;; (autoload 'keisen-down-move "keisen" nil t)
 ;; (autoload 'keisen-left-move "keisen" nil t)
 ;; (autoload 'keisen-right-move "keisen" nil t)
- 
+
 ;;; 92.7.6   modified for Mule Ver.0.9.5 by T.Shingu <shingu@cpr.canon.co.jp>
 ;;; 92.7.13  modified for Mule Ver.0.9.5 by K.Handa <handa@etl.go.jp>
 ;;; 93.8.5   modified for dmacro.el by T.Masui <masui@shpcsl.sharp.co.jp>
@@ -40,44 +42,44 @@
 
 (provide 'keisen)
 (require 'picture)
- 
+
 (defconst keisen-right 1)
 (defconst keisen-up 2)
 (defconst keisen-left 4)
 (defconst keisen-down 8)
- 
+
 (defconst keisen-table "\
-$B!v!v!v(&!v(!(%(*!v(#("('($((()(+(B\
-$B!v!v!v!v!v!v!v!v!v!v(<!v!v!v!v!v(B\
-$B!v!v!v!v!v(?!v!v!v!v!v!v!v!v!v!v(B\
-$B(1!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B!v!v!v!v!v!v!v!v!v!v(>!v!v!v!v!v(B\
-$B(,!v(:!v!v!v!v!v(8!v(;!v!v!v!v!v(B\
-$B(0!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B(5!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B!v!v!v!v!v(=!v!v!v!v!v!v!v!v!v!v(B\
-$B(.!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B(-(7!v!v(9(@!v!v!v!v!v!v!v!v!v!v(B\
-$B(2!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B(/!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B(3!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B(4!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B\
-$B(6!v!v!v!v!v!v!v!v!v!v!v!v!v!v!v(B"
-  "$B7S@~%-%c%i%/%?$N3FJ}8~$N;^$NM-L5$r(B8$B%S%C%H$GI=8=$9$k!#(B
-$B%$%s%G%C%/%9$N>e0L(B4$B%S%C%H$OB@$$@~$NM-L5$r<($7!"2<0L(B4$B%S%C%H$,(B
-$B:Y$$@~$NM-L5$r<($9!#(B")
- 
+＊＊＊└＊─┘┴＊┌│├┐┬┤┼\
+＊＊＊＊＊＊＊＊＊＊┝＊＊＊＊＊\
+＊＊＊＊＊┸＊＊＊＊＊＊＊＊＊＊\
+┗＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+＊＊＊＊＊＊＊＊＊＊┥＊＊＊＊＊\
+━＊┷＊＊＊＊＊┯＊┿＊＊＊＊＊\
+┛＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+┻＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+＊＊＊＊＊┰＊＊＊＊＊＊＊＊＊＊\
+┏＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+┃┠＊＊┨╂＊＊＊＊＊＊＊＊＊＊\
+┣＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+┓＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+┳＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+┫＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\
+╋＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊"
+  "罫線キャラクタの各方向の枝の有無を8ビットで表現する。
+インデックスの上位4ビットは太い線の有無を示し、下位4ビットが
+細い線の有無を示す。")
+
 (defvar keisen-width 1
-  "$B7S@~$NB@$5!#(B1$B$N$H$-:Y$/!"(B2$B0J>e$N$H$-B@$$!#(B")
- 
+  "罫線の太さ。1のとき細く、2以上のとき太い。")
+
 (defun keisen-toggle-width ()
-  "$B7S@~$NB@$5$r@Z$j49$($k(B"
+  "罫線の太さを切り換える"
   (interactive)
   (cond
-   ((> keisen-width 1) (message "$B:Y$$7S@~$r;HMQ$7$^$9(B") (setq keisen-width 1))
-   (t (message  "$BB@$$7S@~$r;HMQ$7$^$9(B") (setq keisen-width 2))
+   ((> keisen-width 1) (message "細い罫線を使用します") (setq keisen-width 1))
+   (t (message  "太い罫線を使用します") (setq keisen-width 2))
    ))
- 
+
 (defun keisen-opposite-direction (dir)
   (cond
    ((= dir keisen-right) keisen-left)
@@ -86,7 +88,7 @@
    ((= dir keisen-down) keisen-up)
    (t 0)
    ))
- 
+
 (defun keisen-direction (command)
   (cond
    ((eq command 'keisen-right-move) keisen-right)
@@ -95,7 +97,7 @@
    ((eq command 'keisen-down-move) keisen-down)
    ((eq command t) keisen-last-direction) ; 93.8.5 by T.Masui
    (t 0)))
- 
+
 (defun keisen-new-string ()		; 92.7.13 by K.Handa -- Big change
   (let (pos factor str old-direction new-direction)
     (setq old-direction (keisen-direction last-command))
@@ -126,21 +128,21 @@
   )
 
 (defun keisen-right-move ()
-  "$B7S@~$r0z$-$J$,$i1&J}8~$K0\F0$9$k(B" 
+  "罫線を引きながら右方向に移動する"
   (interactive)
   (keisen-move 0 1))
-			  
+
 (defun keisen-left-move ()
-  "$B7S@~$r0z$-$J$,$i:8J}8~$K0\F0$9$k(B"
+  "罫線を引きながら左方向に移動する"
   (interactive)
   (keisen-move 0 -1))
 
 (defun keisen-up-move ()
-  "$B7S@~$r0z$-$J$,$i>eJ}8~$K0\F0$9$k(B"
+  "罫線を引きながら上方向に移動する"
   (interactive)
   (keisen-move -1 0))
 
 (defun keisen-down-move ()
-  "$B7S@~$r0z$-$J$,$i2<J}8~$K0\F0$9$k(B"
+  "罫線を引きながら下方向に移動する"
   (interactive)
   (keisen-move 1 0))
