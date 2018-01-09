@@ -147,6 +147,31 @@
   "罫線を引きながら下方向に移動する"
   (interactive)
   (keisen-move 1 0))
+
+;; Minor mode
+(defvar keisen-mode-lighter " ┣┴┰┘")
+
+(defvar keisen-mode-map
+  (let ((map (make-keymap))
+        (quit (lambda () (interactive) (keisen-mode -1))))
+    (suppress-keymap map)
+    (define-key map (kbd "x") #'keisen-toggle-width)
+    (define-key map (kbd "q") quit)
+    (define-key map (kbd "h") #'keisen-left-move)
+    (define-key map (kbd "j") #'keisen-down-move)
+    (define-key map (kbd "k") #'keisen-up-move)
+    (define-key map (kbd "l") #'keisen-right-move)
+    (define-key map (kbd "<up>")    #'keisen-up-move)
+    (define-key map (kbd "<down>")  #'keisen-down-move)
+    (define-key map (kbd "<left>")  #'keisen-left-move)
+    (define-key map (kbd "<right>") #'keisen-right-move)
+    (define-key map (kbd "C-g") quit)
+    map))
+
+;;;###autoload
+(define-minor-mode keisen-mode
+  "Minor mode for Box Drowing."
+  :keymap keisen-mode-map :lighter keisen-mode-lighter)
 
 (provide 'keisen)
 ;;; keisen.el ends here
