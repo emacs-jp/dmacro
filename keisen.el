@@ -40,7 +40,8 @@
 ;;;	To be used also with Nemacs.
 ;;; 2004.5.6 modified for Emacs21 by T.Masui <masui@pitecan.com>
 
-(provide 'keisen)
+;;; Code:
+
 (require 'picture)
 
 (defconst keisen-right 1)
@@ -146,3 +147,6 @@
   "罫線を引きながら下方向に移動する"
   (interactive)
   (keisen-move 1 0))
+
+(provide 'keisen)
+;;; keisen.el ends here
