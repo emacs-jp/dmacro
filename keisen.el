@@ -157,11 +157,10 @@
 (defvar keisen-mode-lighter " ┣┴┰┘")
 
 (defvar keisen-mode-map
-  (let ((map (make-keymap))
-        (quit (lambda () (interactive) (keisen-mode -1))))
+  (let ((map (make-keymap)))
     (suppress-keymap map)
     (define-key map (kbd "x") #'keisen-toggle-width)
-    (define-key map (kbd "q") quit)
+    (define-key map (kbd "q") #'keisen-mode)
     (define-key map (kbd "h") #'keisen-left-move)
     (define-key map (kbd "j") #'keisen-down-move)
     (define-key map (kbd "k") #'keisen-up-move)
@@ -170,7 +169,7 @@
     (define-key map (kbd "<down>")  #'keisen-down-move)
     (define-key map (kbd "<left>")  #'keisen-left-move)
     (define-key map (kbd "<right>") #'keisen-right-move)
-    (define-key map (kbd "C-g") quit)
+    (define-key map (kbd "C-g") #'keisen-mode)
     map))
 
 ;;;###autoload
