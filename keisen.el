@@ -6,6 +6,11 @@
 ;; Everyone is granted permission to copy, modify and redistribute
 ;; this program freely.
 
+;; Author: Toshiyuki Masui <masui@ptiecan.com>
+;; Version: 2.0
+;; Keywords: convenience
+;; URL: https://github.com/emacs-jp/dmacro
+
 ;;; Commentary:
 
 ;; .emacsに以下のような記述を入れると矢印キーで罫線が引ける
