@@ -7,7 +7,7 @@
 ;; this program freely.
 
 ;; Author: Toshiyuki Masui <masui@ptiecan.com>
-;; Version: 2.0
+;; Maintainer: USAMI Kenta <tadsan@zonu.me>
 ;; Keywords: convenience
 ;; URL: https://github.com/emacs-jp/dmacro
 
