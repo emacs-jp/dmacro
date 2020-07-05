@@ -189,10 +189,11 @@
 ;; (株)ソニーコンピュータサイエンス研究所
 ;; masui@acm.org
 ;;
-
-;;; Code:
-(require 'cl-lib)
 
+;;; Code:
+
+(require 'cl-lib)
+
 ;; Variables
 
 ;;;###autoload
@@ -216,12 +217,16 @@
     "Default key sequences for dmacro."
     :type 'key-sequence
     :group 'dmacro))
+
 
 ;; Special variables *var*
+
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
+
 
 ;; Utility functions
+
 (defalias 'dmacro--user-error
   (eval-when-compile (if (fboundp 'user-error) #'user-error #'message)))
 
@@ -237,6 +242,7 @@
       ('escape    ?\C-\[)
       ('delete    ?\C-?)
       (t          key))))
+
 
 ;;; Functions
 
