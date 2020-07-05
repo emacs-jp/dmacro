@@ -201,8 +201,6 @@
 (defvar dmacro-keys nil)
 (make-variable-buffer-local 'dmacro-keys)
 
-(defvar dmacro-lighter " dmac")
-
 ;; Customize
 
 (defgroup dmacro nil "Dynamic Macro"
@@ -313,7 +311,7 @@
 (define-minor-mode dmacro-mode
   "Dynamic Macro"
   :group 'dmacro
-  :lighter dmacro-lighter
+  :lighter " dmac"
   (setq dmacro-key (or dmacro-key dmacro-default-key))
   (if (not dmacro-mode)
       (local-set-key dmacro-key nil)
