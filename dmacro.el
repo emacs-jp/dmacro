@@ -15,8 +15,8 @@
 ;; Created: 14 Apr 1993
 ;; Version: 2.0
 ;; Keywords: convenience
-;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/emacs-jp/dmacro
+;; Package-Requires: ((emacs "24.3"))
 ;; License: FSFAP
 
 ;;; Commentary:
