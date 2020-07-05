@@ -292,21 +292,6 @@
   "Turn on `dmacro-mode'."
   (dmacro-mode 1))
 
-;; Compatibility for old setup description
-(when (boundp '*dmacro-key*)
-  (defun dmacro-exec ()
-    "Repeated detection and execution of key operation."
-    (interactive)
-    (setq dmacro-key *dmacro-key*)
-    (unless dmacro-mode
-      (dmacro-mode 1))
-
-    (let ((s (dmacro-get)))
-      (if (null s)
-          (dmacro--user-error "There is no repetitive operation")
-        (execute-kbd-macro s))))
-  (make-obsolete 'dmacro-exec 'dmacro-mode "2.0"))
-
 ;;;###autoload
 (define-minor-mode dmacro-mode
   "Dynamic Macro"
