@@ -196,27 +196,23 @@
 
 ;; Variables
 
-;;;###autoload
-(progn
-  (defvar dmacro-key nil)
-  (make-variable-buffer-local 'dmacro-key)
-  (defvar dmacro-keys nil)
-  (make-variable-buffer-local 'dmacro-keys))
+(defvar dmacro-key nil)
+(make-variable-buffer-local 'dmacro-key)
+(defvar dmacro-keys nil)
+(make-variable-buffer-local 'dmacro-keys)
 
 (defvar dmacro-lighter " dmac")
 
 ;; Customize
 
-;;;###autoload
-(progn
-  (defgroup dmacro nil "Dynamic Macro"
-    :group 'convenient
-    :prefix "dmacro-")
+(defgroup dmacro nil "Dynamic Macro"
+  :group 'convenient
+  :prefix "dmacro-")
 
-  (defcustom dmacro-default-key nil
-    "Default key sequences for dmacro."
-    :type 'key-sequence
-    :group 'dmacro))
+(defcustom dmacro-default-key nil
+  "Default key sequences for dmacro."
+  :type 'key-sequence
+  :group 'dmacro)
 
 
 ;; Special variables *var*
