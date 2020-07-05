@@ -15,7 +15,7 @@
 ;; Created: 14 Apr 1993
 ;; Version: 2.0
 ;; Keywords: convenience
-;; Package-Requires: ((cl-lib "0.5"))
+;; Package-Requires: ((emacs "24.3") (cl-lib "0.5"))
 ;; URL: https://github.com/emacs-jp/dmacro
 ;; License: FSFAP
 
@@ -196,10 +196,8 @@
 
 ;; Variables
 
-(defvar dmacro-key nil)
-(make-variable-buffer-local 'dmacro-key)
-(defvar dmacro-keys nil)
-(make-variable-buffer-local 'dmacro-keys)
+(defvar-local dmacro-key nil)
+(defvar-local dmacro-keys nil)
 
 ;; Customize
 
