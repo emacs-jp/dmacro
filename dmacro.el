@@ -196,13 +196,6 @@
 
 (require 'cl-lib)
 
-;; Variables
-
-(defvar-local dmacro-key nil)
-(defvar-local dmacro-keys nil)
-
-;; Customize
-
 (defgroup dmacro nil "Dynamic Macro"
   :group 'convenient
   :prefix "dmacro-")
@@ -217,6 +210,8 @@
 
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
+(defvar-local dmacro-key nil)
+(defvar-local dmacro-keys nil)
 
 
 ;; Utility functions
