@@ -311,8 +311,7 @@
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
   dmacro-mode
-  :group 'dmacro
-  :require 'dmacro)
+  :group 'dmacro)
 
 (provide 'dmacro)
 ;;; dmacro.el ends here
