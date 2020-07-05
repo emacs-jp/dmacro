@@ -288,10 +288,6 @@
       (if (not found) (setq p (1+ p))))
     (if found p nil)))
 
-(defun turn-on-dmacro ()
-  "Turn on `dmacro-mode'."
-  (dmacro-mode 1))
-
 ;;;###autoload
 (define-minor-mode dmacro-mode
   "Dynamic Macro"
@@ -314,7 +310,7 @@
 
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
-  turn-on-dmacro
+  dmacro-mode
   :group 'dmacro
   :require 'dmacro)
 
