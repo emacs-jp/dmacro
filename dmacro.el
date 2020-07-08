@@ -274,7 +274,7 @@
          found)
     (while (and (not found) (<= p max))
       (setq found (equal pat (cl-subseq arry p (+ p len))))
-      (when (not found) (setq p (1+ p))))
+      (unless found (setq p (1+ p))))
     (if found p nil)))
 
 
