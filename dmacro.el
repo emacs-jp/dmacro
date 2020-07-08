@@ -247,7 +247,7 @@
 (defun dmacro-search (array)
   "Search `ARRAY'."
   (let* ((arry (reverse array))
-         (sptr  1)
+         (sptr 1)
          (dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
          (dptr dptr0)
          maxptr)
