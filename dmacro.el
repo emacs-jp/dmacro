@@ -200,18 +200,17 @@
   :group 'convenient
   :prefix "dmacro-")
 
-(defcustom dmacro-default-key nil
-  "Default key sequences for dmacro."
+(defcustom dmacro-key (kbd "C-S-e")
+  "Key sequences for dmacro."
   :type 'key-sequence
   :group 'dmacro)
 
 
 ;; Special variables *var*
 
+(defvar dmacro-keys nil)
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
-(defvar-local dmacro-key nil)
-(defvar-local dmacro-keys nil)
 
 
 ;; Utility functions
@@ -288,11 +287,10 @@
   "Dynamic Macro"
   :group 'dmacro
   :lighter " dmac"
-  (setq dmacro-key (or dmacro-key dmacro-default-key))
   (if (not dmacro-mode)
       (local-set-key dmacro-key nil)
     (unless dmacro-key
-      (error "Not set `dmacro-key' or `dmacro-default-key'"))
+      (error "`dmacro-key' is not set'"))
     (setq dmacro-keys (vconcat dmacro-key dmacro-key))
     (local-set-key
      dmacro-key
