@@ -288,10 +288,10 @@
   `((,dmacro-key
      . (lambda ()
          (interactive)
-         (let ((s (dmacro-get)))
-           (if (null s)
+         (let ((keys (dmacro-get)))
+           (if (null keys)
                (dmacro--user-error "There is no repetitive operation")
-             (execute-kbd-macro s)))))))
+             (execute-kbd-macro keys)))))))
 
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
