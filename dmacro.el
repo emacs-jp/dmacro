@@ -208,7 +208,6 @@
 
 ;; Special variables *var*
 
-(defvar dmacro-keys nil)
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
 
@@ -236,8 +235,9 @@
 
 (defun dmacro-get ()
   "Get repeated sequence."
-  (let ((rkeys (recent-keys)) arry)
-    (if (equal dmacro-keys (cl-subseq rkeys (- (length dmacro-keys))))
+  (let ((keys (vconcat dmacro-key dmacro-key))
+        (rkeys (recent-keys)) arry)
+    (if (equal keys (cl-subseq rkeys (- (length keys))))
         (progn
           (setq dmacro--input-subkeys nil)
           dmacro--input-keys)
@@ -291,7 +291,6 @@
       (local-set-key dmacro-key nil)
     (unless dmacro-key
       (error "`dmacro-key' is not set'"))
-    (setq dmacro-keys (vconcat dmacro-key dmacro-key))
     (local-set-key
      dmacro-key
      (lambda ()
