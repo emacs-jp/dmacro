@@ -206,13 +206,10 @@
   :group 'dmacro)
 
 
-;; Special variables *var*
+;;; Functions
 
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
-
-
-;; Utility functions
 
 (defalias 'dmacro--user-error
   (eval-when-compile (if (fboundp 'user-error) #'user-error #'message)))
@@ -229,9 +226,6 @@
       ('escape    ?\C-\[)
       ('delete    ?\C-?)
       (t          key))))
-
-
-;;; Functions
 
 (defun dmacro-get ()
   "Get repeated sequence."
@@ -281,6 +275,9 @@
       (setq found (equal pat (cl-subseq arry p (+ p len))))
       (if (not found) (setq p (1+ p))))
     (if found p nil)))
+
+
+;;; Main
 
 ;;;###autoload
 (define-minor-mode dmacro-mode
