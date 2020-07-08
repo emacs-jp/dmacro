@@ -238,9 +238,10 @@
       (setq arry (dmacro-search (cl-subseq rkeys 0 (- (length dmacro-key)))))
       (if (null arry)
           (setq dmacro--input-keys nil)
-        (let ((s1 (car arry)) (s2 (cdr arry)))
-          (setq dmacro--input-keys (vconcat s2 s1)
-                dmacro--input-subkeys (if (equal s1 "") nil s1))
+        (let ((s1 (car arry))
+              (s2 (cdr arry)))
+          (setq dmacro--input-keys (vconcat s2 s1))
+          (setq dmacro--input-subkeys (if (equal s1 "") nil s1))
           (setq last-kbd-macro dmacro--input-keys)
           (if (equal s1 "") dmacro--input-keys s1))))))
 
