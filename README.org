@@ -1,0 +1,65 @@
+#+date: <2020-07-08 Wed>
+
+[[https://github.com/emacs-jp/dmacro][https://raw.githubusercontent.com/conao3/files/master/blob/headers/png/dmacro.png]]
+[[https://github.com/emacs-jp/dmacro/blob/master/LICENSE][https://img.shields.io/github/license/emacs-jp/dmacro.svg?style=flat-square]]
+[[https://github.com/emacs-jp/dmacro/releases][https://img.shields.io/github/tag/emacs-jp/dmacro.svg?style=flat-square]]
+[[https://github.com/emacs-jp/dmacro/actions][https://github.com/emacs-jp/dmacro/workflows/Main%20workflow/badge.svg]]
+
+* Table of Contents
+- [[#description][Description]]
+- [[#install][Install]]
+- [[#usage][Usage]]
+- [[#customize][Customize]]
+- [[#information][Information]]
+  - [[#contribution][Contribution]]
+  - [[#license][License]]
+  
+* Description
+Repeated detection and execution of key operation.
+
+* Install
+#+begin_src emacs-lisp
+  (leaf dmacro :ensure t)
+#+end_src
+
+* Usage
+
+* Customize
+
+* Information
+** Contribution
+We welcome PR!
+
+*** Require tools for testing
+- keg
+  #+begin_src shell
+    cd ~/
+    hub clone conao3/keg .keg
+    export PATH="$HOME/.keg/bin:$PATH"
+
+*** Running test
+Below operation flow is recommended.
+#+begin_src shell
+  make                              # Install git-hooks in local .git
+
+  git branch [feature-branch]       # Create branch named [feature-branch]
+  git checkout [feature-branch]     # Checkout branch named [feature-branch]
+
+  # <edit loop>
+  emacs dmacro.el           # Edit something you want
+
+  make test                         # Test dmacro via multi version Emacs
+  git commit -am "brabra"           # Commit (auto-run test before commit)
+  # </edit loop>
+
+  hub fork                          # Create fork at GitHub
+  git push [user] [feature-branch]  # Push feature-branch to your fork
+  hub pull-request                  # Create pull-request
+#+end_src
+
+** License
+#+begin_example
+  FSFAP
+  Copyright (c) 1993 Toshiyuki Masui
+  https://github.com/emacs-jp/dmacro/blob/master/LICENSE
+#+end_example
