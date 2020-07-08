@@ -289,9 +289,9 @@
      . (lambda ()
          (interactive)
          (let ((keys (dmacro-get)))
-           (if (null keys)
-               (dmacro--user-error "There is no repetitive operation")
-             (execute-kbd-macro keys)))))))
+           (if keys
+               (execute-kbd-macro keys)
+             (dmacro--user-error "There is no repetitive operation")))))))
 
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
