@@ -254,8 +254,8 @@
          maxptr)
     (while (and dptr0
                 (not (dmacro-array-search dmacro-key (cl-subseq arry sptr dptr0))))
-      (if (= dptr0 sptr)
-          (setq maxptr sptr))
+      (when (= dptr0 sptr)
+        (setq maxptr sptr))
       (setq sptr (1+ sptr))
       (setq dptr dptr0)
       (setq dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr)))
@@ -274,7 +274,7 @@
          found)
     (while (and (not found) (<= p max))
       (setq found (equal pat (cl-subseq arry p (+ p len))))
-      (if (not found) (setq p (1+ p))))
+      (when (not found) (setq p (1+ p))))
     (if found p nil)))
 
 
