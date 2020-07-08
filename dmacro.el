@@ -206,14 +206,10 @@
   :group 'dmacro)
 
 
-;; Special variables *var*
+;;; Functions
 
-(defvar dmacro-keys nil)
 (defvar dmacro--input-keys)
 (defvar dmacro--input-subkeys)
-
-
-;; Utility functions
 
 (defalias 'dmacro--user-error
   (eval-when-compile (if (fboundp 'user-error) #'user-error #'message)))
@@ -231,13 +227,11 @@
       ('delete    ?\C-?)
       (t          key))))
 
-
-;;; Functions
-
 (defun dmacro-get ()
   "Get repeated sequence."
-  (let ((rkeys (recent-keys)) arry)
-    (if (equal dmacro-keys (cl-subseq rkeys (- (length dmacro-keys))))
+  (let ((keys (vconcat dmacro-key dmacro-key))
+        (rkeys (recent-keys)) arry)
+    (if (equal keys (cl-subseq rkeys (- (length keys))))
         (progn
           (setq dmacro--input-subkeys nil)
           dmacro--input-keys)
@@ -282,6 +276,9 @@
       (if (not found) (setq p (1+ p))))
     (if found p nil)))
 
+
+;;; Main
+
 ;;;###autoload
 (define-minor-mode dmacro-mode
   "Dynamic Macro"
@@ -291,7 +288,6 @@
       (local-set-key dmacro-key nil)
     (unless dmacro-key
       (error "`dmacro-key' is not set'"))
-    (setq dmacro-keys (vconcat dmacro-key dmacro-key))
     (local-set-key
      dmacro-key
      (lambda ()
