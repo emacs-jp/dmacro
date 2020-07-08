@@ -1,6 +1,6 @@
 #+date: <2020-07-08 Wed>
 
-[[https://github.com/emacs-jp/dmacro][https://raw.githubusercontent.com/conao3/files/master/blob/headers/png/dmacro.png]]
+[[https://github.com/emacs-jp/dmacro][./images/dmacro-header.png]]
 [[https://github.com/emacs-jp/dmacro/blob/master/LICENSE][https://img.shields.io/github/license/emacs-jp/dmacro.svg?style=flat-square]]
 [[https://github.com/emacs-jp/dmacro/releases][https://img.shields.io/github/tag/emacs-jp/dmacro.svg?style=flat-square]]
 [[https://github.com/emacs-jp/dmacro/actions][https://github.com/emacs-jp/dmacro/workflows/Main%20workflow/badge.svg]]
@@ -15,16 +15,64 @@
   - [[#license][License]]
   
 * Description
+[[./images/dmacro-demo.gif]]
+
 Repeated detection and execution of key operation.
 
 * Install
 #+begin_src emacs-lisp
-  (leaf dmacro :ensure t)
+  (leaf dmacro
+    :ensure t
+    :custom `((dmacro-key . ,(kbd "C-S-e")))
+    :global-minor-mode global-dmacro-mode)
 #+end_src
 
 * Usage
+First turn on =dmacro-mode= or =global-dmacro-mode=.
+
+Then press =dmacro-key= after making repeated edits.
+
+** Example1
+#+begin_src fundamental
+  abc abc _
+          ^(point)
+#+end_src
+
+after type =dmacro-key=, your buffer should be...
+
+#+begin_src fundamental
+  abc abc abc _ 
+#+end_src
+
+and type =dmacro-key=, then...
+
+#+begin_src fundamental
+  abc abc abc abc _ 
+#+end_src
+
+** Example2
+#+begin_src fundamental
+abcdef ab_
+         ^(point)
+#+end_src
+
+after type =dmacro-key=, your buffer should be...
+
+#+begin_src fundamental
+  abcdef abcdef _ 
+#+end_src
+
+and type =dmacro-key=, then...
+
+#+begin_src fundamental
+  abcdef abcdef abcdef _ 
+#+end_src
 
 * Customize
+- dmacro-key :: Key sequences for dmacro
+
+  [NOTE]: If you change this variable after =dmacro-mode= is
+  started, you need to restart =dmacro-mode= to reflect the change.
 
 * Information
 ** Contribution
