@@ -284,18 +284,14 @@
   "Dynamic Macro"
   :group 'dmacro
   :lighter " dmac"
-  (if (not dmacro-mode)
-      (local-set-key dmacro-key nil)
-    (unless dmacro-key
-      (error "`dmacro-key' is not set'"))
-    (local-set-key
-     dmacro-key
-     (lambda ()
-       (interactive)
-       (let ((s (dmacro-get)))
-         (if (null s)
-             (dmacro--user-error "There is no repetitive operation")
-           (execute-kbd-macro s)))))))
+  :keymap
+  `((,dmacro-key
+     . (lambda ()
+         (interactive)
+         (let ((s (dmacro-get)))
+           (if (null s)
+               (dmacro--user-error "There is no repetitive operation")
+             (execute-kbd-macro s)))))))
 
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
