@@ -1,0 +1,9 @@
+;; Keg
+
+(source gnu melpa)
+
+(package
+ (dmacro
+   (recipe . (dmacro :fetcher github :repo "emacs-jp/dmacro"))))
+
+(dev-dependency cort)
