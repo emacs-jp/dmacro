@@ -84,6 +84,7 @@ We welcome PR!
     cd ~/
     hub clone conao3/keg .keg
     export PATH="$HOME/.keg/bin:$PATH"
+  #+end_src
 
 *** Running test
 Below operation flow is recommended.
@@ -94,7 +95,7 @@ Below operation flow is recommended.
   git checkout [feature-branch]     # Checkout branch named [feature-branch]
 
   # <edit loop>
-  emacs dmacro.el           # Edit something you want
+  emacs dmacro.el                   # Edit something you want
 
   make test                         # Test dmacro via multi version Emacs
   git commit -am "brabra"           # Commit (auto-run test before commit)
