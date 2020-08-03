@@ -2,11 +2,6 @@
 
 ;; Copyright (C) 1993 Toshiyuki Masui
 
-;; Copying and distribution of this file, with or without modification,
-;; are permitted in any medium without royalty provided the copyright
-;; notice and this notice are preserved.  This file is offered as-is,
-;; without any warranty.
-
 ;; Author: Toshiyuki Masui <masui@ptiecan.com>
 ;;         Makoto Owada
 ;;         Eiji Obata
@@ -19,7 +14,6 @@
 ;; Package-Requires: ((emacs "24.1") (cl-lib "0.6"))
 
 ;; License: FSFAP
-
 ;; Copying and distribution of this file, with or without modification,
 ;; are permitted in any medium without royalty provided the copyright
 ;; notice and this notice are preserved.  This file is offered as-is,
