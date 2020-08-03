@@ -20,6 +20,8 @@
 Repeated detection and execution of key operation.
 
 * Install
+Sample install code using [[https://github.com/conao3/leaf.el][leaf.el]].
+
 #+begin_src emacs-lisp
   (leaf dmacro
     :ensure t
