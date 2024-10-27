@@ -1,4 +1,4 @@
-;;; dmacro.el --- Repeated detection and execution of key operation
+;;; dmacro.el --- Repeated detection and execution of key operation  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1993 Toshiyuki Masui
 
