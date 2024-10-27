@@ -41,16 +41,13 @@
 
 (require 'cl-lib)
 
-(defgroup dmacro nil "Dynamic Macro"
-  :group 'convenient
-  :prefix "dmacro-")
+(defgroup dmacro nil "Repeated detection and execution of key operation."
+  :group 'convenient)
 
 (defcustom dmacro-key (kbd "C-S-e")
   "Key sequences for dmacro."
   :type 'key-sequence
   :group 'dmacro)
-
-
 
 ;;; Functions
 
@@ -80,7 +77,7 @@
           (if (equal s1 "") dmacro--input-keys s1))))))
 
 (defun dmacro-search (array key)
-  "Search `ARRAY'."
+  "Search ARRAY for a subsequence matching KEY."
   (let* ((arry (reverse array))
          (sptr 1)
          (dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr))
@@ -125,7 +122,7 @@
 
 ;;;###autoload
 (define-minor-mode dmacro-mode
-  "Dynamic Macro"
+  "A minor mode for executing dynamic macros."
   :group 'dmacro
   :lighter " dmac"
   :keymap
