@@ -50,6 +50,7 @@
   :type 'key-sequence
   :group 'dmacro)
 
+
 
 ;;; Functions
 
@@ -59,28 +60,16 @@
 (defalias 'dmacro--user-error
   (eval-when-compile (if (fboundp 'user-error) #'user-error #'message)))
 
-(defun dmacro--ensure-keycode (key)
-  "Return key code or symbol `KEY' by `recent-keys'."
-  (if (integerp key)
-      key
-    (cl-case key
-      ('backspace ?\C-h)
-      ('tab       ?\C-i)
-      ('enter     ?\C-m)
-      ('return    ?\C-m)
-      ('escape    ?\C-\[)
-      ('delete    ?\C-?)
-      (t          key))))
-
 (defun dmacro-get ()
   "Get repeated sequence."
-  (let ((keys (vconcat dmacro-key dmacro-key))
-        (rkeys (recent-keys)) arry)
+  (let* ((lce (vector last-command-event))
+         (keys (vconcat lce lce))
+         (rkeys (recent-keys)) arry)
     (if (equal keys (cl-subseq rkeys (- (length keys))))
         (progn
           (setq dmacro--input-subkeys nil)
           dmacro--input-keys)
-      (setq arry (dmacro-search (cl-subseq rkeys 0 (- (length dmacro-key)))))
+      (setq arry (dmacro-search (cl-subseq rkeys 0 (- (length lce))) lce))
       (if (null arry)
           (setq dmacro--input-keys nil)
         (let ((s1 (car arry))
@@ -90,7 +79,7 @@
           (setq last-kbd-macro dmacro--input-keys)
           (if (equal s1 "") dmacro--input-keys s1))))))
 
-(defun dmacro-search (array)
+(defun dmacro-search (array key)
   "Search `ARRAY'."
   (let* ((arry (reverse array))
          (sptr 1)
@@ -98,7 +87,7 @@
          (dptr dptr0)
          maxptr)
     (while (and dptr0
-                (not (dmacro-array-search dmacro-key (cl-subseq arry sptr dptr0))))
+                (not (dmacro-array-search key (cl-subseq arry sptr dptr0))))
       (when (= dptr0 sptr)
         (setq maxptr sptr))
       (setq sptr (1+ sptr))
@@ -106,13 +95,13 @@
       (setq dptr0 (dmacro-array-search (cl-subseq arry 0 sptr) arry sptr)))
     (if (null maxptr)
         (let ((predict-arry (reverse (cl-subseq arry (1- sptr) dptr))))
-          (if (dmacro-array-search dmacro-key predict-arry)
+          (if (dmacro-array-search key predict-arry)
               nil
             (cons predict-arry (reverse (cl-subseq arry 0 (1- sptr))))))
       (cons "" (reverse (cl-subseq arry 0 maxptr))))))
 
 (defun dmacro-array-search (pat arry &optional start)
-  "Search pattern `PAT' by `ARRY'.  `START'."
+  "Search pattern `PAT' by `ARRY' from `START'."
   (let* ((len (length pat))
 	 (max (- (length arry) len))
 	 (p (or start 0))
@@ -126,18 +115,21 @@
 ;;; Main
 
 ;;;###autoload
+(defun dmacro-exec ()
+  "Repeated detection and execution of key operation."
+  (interactive)
+  (let ((keys (dmacro-get)))
+    (if keys
+        (execute-kbd-macro keys)
+      (dmacro--user-error "There is no repetitive operation"))))
+
+;;;###autoload
 (define-minor-mode dmacro-mode
   "Dynamic Macro"
   :group 'dmacro
   :lighter " dmac"
   :keymap
-  `((,dmacro-key
-     . (lambda ()
-         (interactive)
-         (let ((keys (dmacro-get)))
-           (if keys
-               (execute-kbd-macro keys)
-             (dmacro--user-error "There is no repetitive operation")))))))
+  `((,dmacro-key . dmacro-exec)))
 
 ;;;###autoload
 (define-globalized-minor-mode global-dmacro-mode dmacro-mode
